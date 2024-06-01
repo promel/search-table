@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>Sample</title>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+
+			<p>
+				<button id="loadDataSimulation" class="btn btn-success">Load new data</button>
+			</p>
+
+			<h3>Simple table with column search</h3>
+			<table id="sampleTableB" class="table table-striped sampleTable">
+			</table>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/js.geotools/dist/geotools.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/js.geotools/dist/geotools-swedish-zipcodes.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
+
+		<script src="../src/fancyTable.js"></script>
+		<script type="text/javascript">
+			// Word genarator
+			function rWord(r){var t,n="bcdfghjklmnpqrstvwxyz",a="aeiou",e=function(r){return Math.floor(Math.random()*r)},o="";r=parseInt(r,10),n=n.split(""),a=a.split("");for(t=0;t<r/2;t++){var l=n[e(n.length)],p=a[e(a.length)];o+=0===t?l.toUpperCase():l,o+=2*t<r-1?p:""}return o}
+
+			$(document).ready(function() {
+				// And a simple one
+				for(var n=0;n<10;n++){
+					var row = $("<tr>");
+					for(var nn=0;nn<5;nn++){
+						$("<td>",{
+							html: rWord(8),
+							style:"padding:2px;"
+						}).appendTo($(row));
+					}
+					$(row).find("td:first").first().html( Math.floor(Math.random()*100000)/100 );
+					$(row).find("td:last").first().html( moment(new Date(Math.floor(new Date().getTime()*Math.random()))).format('l') );
+					row.appendTo($("#sampleTableB"));
+				}
+
+
+				$("#sampleTableB").fancyTable({
+					pagination: true,
+					exactMatch: "auto",
+					perPage:9
+				});
+			});
+		</script>
+	</body>
+</html>

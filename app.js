@@ -1,29 +1,27 @@
-var app = angular.module('myApp', ['ui.bootstrap']);
-app.filter('beginning_data', function() {
-    return function (input, begin) {
-        if (input) {
-            begin = +begin;
-            return input.slice(begin);
-        }
-        return [];
-    }
-});
+$(document).ready(() => {
+    $.ajax({
+        method: "POST",
+        url: 'https://www.hansafrique.co.za/Home/GetallCat',
+    }).done((data) => {
 
-app.controller('controller', function ($scope, $http, $timeout)  {
-    $http.get('https://www.hansafrique.co.za/Home/GetallCat').success(function (user_data){
-        $scope.file = user_data.result;
-        $scope.current_grid = 1;
-        $scope.data_limit = 10;
-        $scope.filter_data = $scope.file.length;
-        $scope.entire_user = $scope.file.length;
+            // And a simple one
+            for (const item of data.result) {
+                const row = $("<tr>");
+                // console.log(item);
+                for (const value of Object.entries(item).values()) {
+                    // console.log(value);
+                    $("<td>", {
+                        html: value,
+                        style: "padding:2px;"
+                    }).appendTo($(row));
+                }
+                row.appendTo($("#tblCatalogueUpdateList"));
+            }
+        });
+
+    $("#tblCatalogueUpdateList").fancyTable({
+        pagination: true,
+        exactMatch: "auto",
+        perPage: 4
     });
-    $scope.page_position = function(page_number) {
-        console.log(page_number);
-        $scope.current_grid = page_number;
-    }
-    $scope.filter = function (){
-        $timeout(function() {
-            Sscopefilter_data = $scope.searched.length;
-        }, 20);
-    }
 });
