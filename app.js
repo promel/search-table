@@ -2,26 +2,19 @@ $(document).ready(() => {
     $.ajax({
         method: "POST",
         url: 'https://www.hansafrique.co.za/Home/GetallCat',
-    }).done((data) => {
+    }).done((response) => {
 
-            // And a simple one
-            for (const item of data.result) {
-                const row = $("<tr>");
-                // console.log(item);
-                for (const value of Object.entries(item).values()) {
-                    // console.log(value);
-                    $("<td>", {
-                        html: value,
-                        style: "padding:2px;"
-                    }).appendTo($(row));
-                }
-                row.appendTo($("#tblCatalogueUpdateList"));
-            }
+        const data = response.result.map((item)=>[
+            item["OEM_Part"],
+            item["PCB_Part"],
+            item["HFR_Part"],
+            item["LUK_Part"],
+            item["Tractor_Model"],
+        ]
+    );
+    $('#table_id').DataTable( {
+            data: data
+            } )
         });
-
-    $("#tblCatalogueUpdateList").fancyTable({
-        pagination: true,
-        exactMatch: "auto",
-        perPage: 4
-    });
 });
+
